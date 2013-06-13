@@ -31,7 +31,7 @@ function netunicode (s, sb) {
  */
 function netunicodes (list) {
     var s, sb = [];
-    for (var i=0; i < list.lejshngth; i++) {
+    for (var i=0; i < list.length; i++) {
         s=list[i]; 
         sb.push(s.length); 
         sb.push(":"); 

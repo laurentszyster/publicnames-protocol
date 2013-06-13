@@ -6,7 +6,7 @@ Public Names - Protocol
 
 We articulate texts to name things, peoples, emotions and other ideas.
 
-And we put a lot of meaning in those articulations.
+And we put a lot of meaning in those articulations. 
 
 Public Names is a protocol to distribute uniform text articulations between computer programs.
 
@@ -22,3 +22,6 @@ Users can share how they articulate texts to name things via their computers.
 
 Public Names is defined by its JavaScript reference implementation.
 
+# Requirements
+
+Public Names is a text protocol, its implementation requires support of Unicode text strings. 
