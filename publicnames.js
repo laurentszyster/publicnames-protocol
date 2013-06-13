@@ -16,6 +16,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA */
 
 // Encode, validate and outline Public Names
 
+var undefined;
+
 /* The unicode equivalent of djb's netstring */
 function netunicode (s, sb) {
     sb.push(s.length); 
@@ -44,7 +46,7 @@ function netunicodes (list) {
 /**
  * Push in a list the netunicoded strings found in the buffer, eventually
  * stripping empty strings (0:,) if strip is true, returns the extended
- * array or the one created if the list given was null and that at least
+ * array or the one created if the list given was undefined and that at least
  * one netunicoded string was found at the buffer's start.
  */
 function netunidecodes (buffer, list, strip) {
@@ -66,7 +68,7 @@ function netunidecodes (buffer, list, strip) {
 				} else if (buffer.charAt(next) != ",") {
 					prev = size; 
 				} else {
-					if (list===null) {
+					if (list === undefined) {
 						list = [];
 					}
 					if (strip | next-pos>1) {
@@ -83,17 +85,17 @@ function netunidecodes (buffer, list, strip) {
 function pnsEncode (item, field) {
     if (typeof item == 'object') {
         var list = [], L=item.length, n;
-        if (typeof L == 'undefined') { // Dictionnary ?
+        if (typeof L === undefined) { // Dictionnary ?
 			for (var k in item) {
 				n = pnsEncode([k, item[k]], field);
-				if (n !== null) {
+				if (n !== undefined) {
 					list.push(n);
 				}
 			}
         } else { // List
 			for (var i=0; i < L; i++) {
 				n = pnsEncode(item[i], field);
-				if (n !== null) {
+				if (n !== undefined) {
 					list.push(n);
 				}
 			}
@@ -105,22 +107,22 @@ function pnsEncode (item, field) {
 		} else if (L == 1) {
 			return list[0];
 		} else {
-			return null;
+			return undefined;
 		}
     } else {
 		item = item.toString(); 
 	}
-    if (field[item] === null) {
+    if (field[item] === undefined) {
 		field[item] = true; 
 		return item;
 	} else {
-		return null;
+		return undefined;
 	}
 }
 
 /* validate Public Names in a given field and under a given horizon
 
-returns the validated Public Names or null if beyond the given horizon.
+returns the validated Public Names or undefined if beyond the given horizon.
 
 the given field is used to filter out names and updated with new names found.
 
@@ -132,21 +134,21 @@ function pnsValidate (names, field, horizon) {
         if (buffer.length === 0 || field[buffer] === true) {
 			continue;
 		}
-        n = netunidecodes (buffer, null, true);
-        if (n === null) {
+        n = netunidecodes (buffer, undefined, true);
+        if (n === undefined) {
             valid.push(buffer); 
             field[buffer] = true; 
             field[''] += 1;
         } else {
             s = pnsValidate (n, field, horizon);
-            if (s !== null) {
+            if (s !== undefined) {
                 valid.push(s); 
                 field[s] = true; 
                 field[''] += 1;
             }
         }
         if (field[''] > horizon) {
-			return null;
+			return undefined;
 		}
     }
     if (valid.length > 1) {
@@ -156,7 +158,7 @@ function pnsValidate (names, field, horizon) {
     if (valid.length > 0) {
         return valid[0];
 	}
-    return null;
+    return undefined;
 }
 
 /* validate and outline Public Names in a given field and under a given horizon
@@ -174,8 +176,8 @@ function pnsValidateAndOutline (names, outline, field, horizon) {
         if (buffer.length === 0 || field[buffer] === true) {
 			continue;
 		}
-        n = netunidecodes (buffer, null, true);
-        if (n === null) {
+        n = netunidecodes (buffer, undefined, true);
+        if (n === undefined) {
 			outline.push(buffer);
             valid.push(buffer); 
             field[buffer] = true; 
