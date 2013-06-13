@@ -218,26 +218,3 @@ function PublicNames (string, horizon) {
 	}
 }
 PublicNames.HORIZON = 30;
-PublicNames.index = function (encoded) {
-	var names = netunidecodes(encoded);
-	if (names && names.length > 1) {
-		var name, index;
-		for (var i=0, L=names.length; i<L; i++) {
-			name = names[i];
-			index = localStorage[name];
-			if (typeof index == 'string') {
-				localStorage[name] = pnsValidate(netunicodes([index, encoded]), {'': 0}, PublicNames.HORIZON);
-				// nullify the index when it is over the user's semantic horizon. To the search process a name is 
-				// no longer relevant when it has been associated with too many other names in the user's metabase. 
-				// Either meaningfull articulations are relevant but well known and hence not searched for 
-				// (programmers don't search for "database", they search for "SQL databases" or "SQLite database"), 
-				// or the name articulated is meaningless alone even out of the user's context, like a number in a 
-				// language (nobody searches for "The" but some will look successfully for "The Big" and all will 
-				// find what topic "The Big Sleep" is related to).
-			} else if (typeof index == 'undefined') {
-				localStorage[name] = encoded;
-				PublicNames.index(name);
-			}
-		}
-	}
-};
